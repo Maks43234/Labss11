@@ -1,0 +1,30 @@
+<?php
+declare(strict_types=1);
+
+class TaskManagerException extends RuntimeException
+{
+}
+
+class TaskNotFoundException extends TaskManagerException
+{
+    public function __construct(int $taskId)
+    {
+        parent::__construct("Завдання з ідентифікатором #{$taskId} не знайдено.", 404);
+    }
+}
+
+class ValidationException extends TaskManagerException
+{
+    private array $errors;
+
+    public function __construct(array $errors)
+    {
+        $this->errors = $errors;
+        parent::__construct('Помилка валідації даних форми: ' . implode(', ', $errors), 422);
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+}
